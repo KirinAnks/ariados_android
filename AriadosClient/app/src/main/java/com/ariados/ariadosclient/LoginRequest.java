@@ -2,6 +2,8 @@ package com.ariados.ariadosclient;
 
 import android.os.AsyncTask;
 
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -14,12 +16,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-public class APICall extends AsyncTask<String, String, String> {
-//    private static final String SERVER_URL = "http://192.168.72.3:8000";
+public class LoginRequest extends AsyncTask<String, String, String> {
+    //    private static final String SERVER_URL = "http://192.168.72.3:8000";
     private static final String SERVER_URL = "http://192.168.100.38:8000";
-    private String response = "";
 
-    public APICall() {
+    private JSONObject response;
+    private Session session;
+
+    public LoginRequest() {
+    }
+
+    public JSONObject getResponse() {
+        return response;
+    }
+
+    public Session getSession() {
+        return session;
     }
 
     @Override
@@ -29,7 +41,6 @@ public class APICall extends AsyncTask<String, String, String> {
             OutputStream out = null;
 
             URL url = new URL(SERVER_URL + params[0]);
-            System.out.println(url.toString());
             String postData = params[1];
 
 //          Iniciando la conexión url
@@ -55,15 +66,24 @@ public class APICall extends AsyncTask<String, String, String> {
                 result.append(line);
             }
 
+            // Seteamos los atributos para posteriormente recuperarlos (aunque rompemos la llamada asíncrona con el .get())
+            try {
+                this.response = new JSONObject(result.toString());
+                this.session = new Session((String) this.response.get("key"));
+            } catch (Exception e) {
+                this.response = null;
+                this.session = null;
+            }
+
             return result.toString();
         } catch (Exception e) {
-            return "There was an error: " +  e.toString() + "; " + e.getMessage();
+            return "There was an error: " + e.toString() + "; " + e.getMessage();
         }
 
     }
 
     @Override
     protected void onPostExecute(String result) {
-        this.response = result;
+
     }
 }

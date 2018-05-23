@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -13,7 +14,6 @@ public class LoginActivity extends AppCompatActivity {
 
     Button bt_continue;
     TextView text_login;
-    TextView text_error;
     EditText input_username;
     EditText input_password;
 
@@ -26,9 +26,6 @@ public class LoginActivity extends AppCompatActivity {
         text_login = findViewById(R.id.text_login);
         input_username = findViewById(R.id.input_username);
         input_password = findViewById(R.id.input_password);
-        text_error = findViewById(R.id.text_error);
-
-        text_error.setText("");
 
         input_username.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,25 +45,27 @@ public class LoginActivity extends AppCompatActivity {
                 HashMap<String, String> post_data = new HashMap<>();
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    text_error.setText("Empty username or password");
+                    Toast.makeText(getApplicationContext(), "Empty username or password", Toast.LENGTH_SHORT).show();
                 } else {
-                    text_error.setText("");
-
                     post_data.put("username", username);
                     post_data.put("password", password);
 
                     String post_params;
-                    String result = "Did not work.";
+                    Session session;
+                    String result = "";
+                    LoginRequest request = new LoginRequest();
 
                     try {
                         post_params = Utiles.getPostDataString(post_data);
-                        result = new APICall().execute("/auth/login/", post_params).get();
-
+                        // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
+                        request.execute("/auth/login/", post_params).get();
+                        session = request.getSession();
+                        result = session.getKey();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        text_error.setText("Error: invalid username or password.");
+                        Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
                     } finally {
-                        text_error.setText(result);
+                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                         text_login.setText("Finished");
                     }
 

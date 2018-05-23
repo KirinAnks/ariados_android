@@ -1,14 +1,14 @@
 package com.ariados.ariadosclient;
 
-public class Connection {
+public class Session {
 
-    private String key = "";
+    private String key;
 
-    public Connection(){
-
+    public Session() {
+        this.key = null;
     }
 
-    public Connection(String key){
+    public Session(String key) {
         this.key = key;
     }
 

@@ -1,5 +1,6 @@
 package com.ariados.ariadosclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 public class LoginActivity extends AppCompatActivity {
 
     Button bt_continue;
+    Button bt_register;
     TextView text_login;
     EditText input_username;
     EditText input_password;
@@ -23,7 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         bt_continue = findViewById(R.id.bt_continue);
-        text_login = findViewById(R.id.text_login);
+        bt_register = findViewById(R.id.bt_register);
+        text_login = findViewById(R.id.text_welcome);
         input_username = findViewById(R.id.input_username);
         input_password = findViewById(R.id.input_password);
 
@@ -36,10 +39,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        bt_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_register = new Intent(LoginActivity.this , RegisterActivity.class);
+                LoginActivity.this.startActivity(intent_register);
+            }
+        });
+
         bt_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                text_login.setText("Logging in...");
+                Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
                 String username = input_username.getText().toString();
                 String password = input_password.getText().toString();
                 HashMap<String, String> post_data = new HashMap<>();
@@ -51,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     post_data.put("password", password);
 
                     String post_params;
-                    Session session;
-                    String result = "";
+                    Session session = new Session();
                     LoginRequest request = new LoginRequest();
 
                     try {
@@ -60,14 +71,15 @@ public class LoginActivity extends AppCompatActivity {
                         // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
                         request.execute("/auth/login/", post_params).get();
                         session = request.getSession();
-                        result = session.getKey();
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
-                    } finally {
-                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                        text_login.setText("Finished");
                     }
+                    // Cambiar de "layout/activity" al pulsar GO! y que haya funcionado bien
+                    Intent intent_main = new Intent(LoginActivity.this , MainActivity.class);
+                    intent_main.putExtra("SESSION_KEY", session.getKey());
+                    LoginActivity.this.startActivity(intent_main);
+                    //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
 
                 }
             }

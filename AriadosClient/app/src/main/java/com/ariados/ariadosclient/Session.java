@@ -5,7 +5,7 @@ public class Session {
     private String key;
 
     public Session() {
-        this.key = null;
+        this.key = "";
     }
 
     public Session(String key) {

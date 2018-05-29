@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         bt_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
                 String username = input_username.getText().toString();
                 String password = input_password.getText().toString();
                 HashMap<String, String> post_data = new HashMap<>();

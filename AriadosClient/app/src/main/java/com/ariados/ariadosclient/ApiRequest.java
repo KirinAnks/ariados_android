@@ -17,11 +17,16 @@ import java.net.URL;
 
 
 public class ApiRequest extends AsyncTask<String, String, String> {
-//    private static final String SERVER_URL = "http://192.168.72.3:8000";
+    //    private static final String SERVER_URL = "http://192.168.72.3:8000";
     private static final String SERVER_URL = "http://192.168.100.38:8000";
     private JSONObject response;
 
     public ApiRequest() {
+        this.response = new JSONObject();
+    }
+
+    public JSONObject getResponse() {
+        return response;
     }
 
     @Override
@@ -57,9 +62,16 @@ public class ApiRequest extends AsyncTask<String, String, String> {
                 result.append(line);
             }
 
+            // Seteamos los atributos para posteriormente recuperarlos (aunque rompemos la llamada asíncrona con el .get())
+            try {
+                this.response = new JSONObject(result.toString());
+            } catch (Exception e) {
+                this.response = new JSONObject();
+            }
+
             return result.toString();
         } catch (Exception e) {
-            return "There was an error: " +  e.toString() + "; " + e.getMessage();
+            return "There was an error: " + e.toString() + "; " + e.getMessage();
         }
 
     }

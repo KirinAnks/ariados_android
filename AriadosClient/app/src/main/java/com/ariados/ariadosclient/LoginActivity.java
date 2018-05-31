@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Cambiar de "layout/activity" al pulsar este botón
-                Intent intent_register = new Intent(LoginActivity.this , RegisterActivity.class);
+                Intent intent_register = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(intent_register);
             }
         });
@@ -73,13 +73,17 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
+                    } finally {
+                        if (!session.getKey().isEmpty()) {
+                            // Cambiar de "layout/activity" al pulsar GO! y que haya funcionado bien
+                            Intent intent_main = new Intent(LoginActivity.this, MainActivity.class);
+                            intent_main.putExtra("SESSION_KEY", session.getKey());
+                            LoginActivity.this.startActivity(intent_main);
+                            //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                        } else{
+                            Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    // Cambiar de "layout/activity" al pulsar GO! y que haya funcionado bien
-                    Intent intent_main = new Intent(LoginActivity.this , MainActivity.class);
-                    intent_main.putExtra("SESSION_KEY", session.getKey());
-                    LoginActivity.this.startActivity(intent_main);
-                    //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

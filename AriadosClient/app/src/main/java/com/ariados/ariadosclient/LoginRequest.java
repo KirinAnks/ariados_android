@@ -24,6 +24,8 @@ public class LoginRequest extends AsyncTask<String, String, String> {
     private Session session;
 
     public LoginRequest() {
+        this.session = new Session();
+        this.response = new JSONObject();
     }
 
     public JSONObject getResponse() {
@@ -71,8 +73,8 @@ public class LoginRequest extends AsyncTask<String, String, String> {
                 this.response = new JSONObject(result.toString());
                 this.session = new Session((String) this.response.get("key"));
             } catch (Exception e) {
-                this.response = null;
-                this.session = null;
+                this.response = new JSONObject(result.toString());
+                this.session = new Session();
             }
 
             return result.toString();

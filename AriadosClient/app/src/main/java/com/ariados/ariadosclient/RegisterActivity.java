@@ -1,7 +1,12 @@
 package com.ariados.ariadosclient;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -27,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText input_home;
     Spinner select_team;
     private String[] teams = new String[]{"INSTINCT", "MYSTIC", "VALOR"};
+    FallbackLocationTracker locTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +46,15 @@ public class RegisterActivity extends AppCompatActivity {
         input_name = findViewById(R.id.input_name);
         input_home = findViewById(R.id.input_home);
         select_team = findViewById(R.id.select_team);
-
         // Establecemos las opciones para el Spinner -dropdown
         ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity.this,
                 android.R.layout.simple_spinner_item, teams);
         select_team.setAdapter(adapter);
+
+        // Solicitamos los permisos para posteriormente usarlos en el registro de la localización actual, en el caso en que no estén dados
+        if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
         bt_continue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +65,6 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = input_name.getText().toString();
                 String home = input_home.getText().toString();
                 String team = select_team.getSelectedItem().toString();
-                System.out.println("This is the team" + team);
 
                 HashMap<String, String> post_data = new HashMap<>();
 
@@ -71,8 +79,28 @@ public class RegisterActivity extends AppCompatActivity {
                     post_data.put("name", name);
                     post_data.put("home_location", home);
                     post_data.put("team", team);
-                    // TODO: Obtener localización actual a través de acceso por GPS
-                    post_data.put("current_location", "0");
+                    // Obtenemos la localización actual a través de acceso por GPS
+                    Location mLocation = null;
+                    double latitud = 0.0;
+                    double longitud = 0.0;
+                    locTracker = new FallbackLocationTracker(RegisterActivity.this);
+
+                    locTracker.start();
+                    if(locTracker.hasLocation()) {
+                        mLocation = locTracker.getLocation();
+                    } else if (locTracker.hasPossiblyStaleLocation()) {
+                        mLocation = locTracker.getPossiblyStaleLocation();
+                    } else {
+                        locTracker.start();
+                    }
+
+                    if (mLocation != null) {
+                        latitud = mLocation.getLatitude();
+                        longitud = mLocation.getLongitude();
+                    }
+                    System.out.println(latitud + "," + longitud);
+
+                    post_data.put("current_location", latitud + "," + longitud);
 
                     String post_params;
                     ApiRequest request = new ApiRequest();
@@ -88,15 +116,17 @@ public class RegisterActivity extends AppCompatActivity {
                         // Ya que la estructura de respuestas del servidor está así organizada, para saber si ha tenido éxito o no la consulta debemos ver si la
                         // respuesta contiene "error" en el JSON. Si es así, es que ha ocurrido algún error y no podemos proceder.
                         success = !response.has("error");
-                        if (!success) { message = response.getString("error");}
+                        if (!success) {
+                            message = response.getString("error");
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(getApplicationContext(), "Username or email already exists", Toast.LENGTH_SHORT).show();
                     } finally {
-                        if(!success){
+                        if (!success) {
                             Toast.makeText(getApplicationContext(), "There was an error: " + message, Toast.LENGTH_SHORT).show();
-                        } else{
+                        } else {
                             Toast.makeText(getApplicationContext(), "Registration successfull!", Toast.LENGTH_SHORT).show();
                             // Cambiar de "layout/activity" al pulsar GO! y que haya funcionado bien
                             Intent intent_main = new Intent(RegisterActivity.this, LoginActivity.class);

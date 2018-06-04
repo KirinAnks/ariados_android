@@ -16,6 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ariados.ariadosclient.utils.ApiRequest;
+import com.ariados.ariadosclient.utils.FallbackLocationTracker;
+import com.ariados.ariadosclient.utils.Utiles;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -98,8 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
                         latitud = mLocation.getLatitude();
                         longitud = mLocation.getLongitude();
                     }
-                    System.out.println(latitud + "," + longitud);
-
                     post_data.put("current_location", latitud + "," + longitud);
 
                     String post_params;

@@ -9,6 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ariados.ariadosclient.utils.LoginRequest;
+import com.ariados.ariadosclient.utils.Session;
+import com.ariados.ariadosclient.utils.Utiles;
+
 import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {

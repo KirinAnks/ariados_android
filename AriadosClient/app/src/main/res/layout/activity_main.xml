@@ -17,23 +17,37 @@
         android:text="Welcome"
         android:textAllCaps="false"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_search"
+        app:layout_constraintBottom_toTopOf="@+id/bt_map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/bt_map"
+        android:layout_width="182dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="276dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:text="MAP"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bt_search" />
+
+    <Button
         android:id="@+id/bt_search"
-        android:layout_width="243dp"
-        android:layout_height="49dp"
-        android:layout_marginBottom="380dp"
+        android:layout_width="182dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="276dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="Search Trainers"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_map"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -41,13 +55,11 @@
         android:id="@+id/text_key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
         android:text="key"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_search" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

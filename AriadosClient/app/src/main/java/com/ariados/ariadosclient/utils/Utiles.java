@@ -1,4 +1,4 @@
-package com.ariados.ariadosclient;
+package com.ariados.ariadosclient.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

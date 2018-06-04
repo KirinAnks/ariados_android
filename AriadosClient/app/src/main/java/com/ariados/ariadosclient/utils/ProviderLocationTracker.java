@@ -1,4 +1,4 @@
-package com.ariados.ariadosclient;
+package com.ariados.ariadosclient.utils;
 
 import android.content.Context;
 import android.location.Location;

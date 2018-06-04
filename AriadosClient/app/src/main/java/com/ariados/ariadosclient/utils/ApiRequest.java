@@ -1,4 +1,4 @@
-package com.ariados.ariadosclient;
+package com.ariados.ariadosclient.utils;
 
 import android.os.AsyncTask;
 
@@ -38,11 +38,16 @@ public class ApiRequest extends AsyncTask<String, String, String> {
             URL url = new URL(SERVER_URL + params[0]);
             String method = params[1];
             String data = params[2];
+            String key = "";
+            if (params.length > 3)
+                key = params[3];
 
 //          Iniciando la conexión url
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(method);
             urlConnection.setConnectTimeout(10000);
+            if (params.length > 3)
+                urlConnection.setRequestProperty("Authorization", "Token " + key);
 
 //          Buffer de salida para inyectar los parámetros POST para la conexión
             out = new BufferedOutputStream(urlConnection.getOutputStream());

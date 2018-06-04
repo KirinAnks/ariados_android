@@ -1,6 +1,8 @@
-package com.ariados.ariadosclient;
+package com.ariados.ariadosclient.utils;
 
 import android.os.AsyncTask;
+
+import com.ariados.ariadosclient.utils.Session;
 
 import org.json.JSONObject;
 

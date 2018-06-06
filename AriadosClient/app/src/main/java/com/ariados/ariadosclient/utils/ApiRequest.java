@@ -44,18 +44,23 @@ public class ApiRequest extends AsyncTask<String, String, String> {
 
 //          Iniciando la conexión url
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod(method);
             urlConnection.setConnectTimeout(10000);
             if (params.length > 3)
                 urlConnection.setRequestProperty("Authorization", "Token " + key);
 
-//          Buffer de salida para inyectar los parámetros POST para la conexión
-            out = new BufferedOutputStream(urlConnection.getOutputStream());
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.write(data);
-            writer.flush();
-            writer.close();
-            out.close();
+            //urlConnection.setRequestMethod(method);
+            if (method.equals("POST")) {
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+
+                //Buffer de salida para inyectar los parámetros POST para la conexión
+                out = new BufferedOutputStream(urlConnection.getOutputStream());
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                writer.write(data);
+                writer.flush();
+                writer.close();
+                out.close();
+            }
             urlConnection.connect();
 
 //          Buffer de entrada para escribir la respuesta de la conexión
@@ -68,14 +73,10 @@ public class ApiRequest extends AsyncTask<String, String, String> {
             }
 
             // Seteamos los atributos para posteriormente recuperarlos (aunque rompemos la llamada asíncrona con el .get())
-            try {
-                this.response = new JSONObject(result.toString());
-            } catch (Exception e) {
-                this.response = new JSONObject();
-            }
-
+            this.response = new JSONObject(result.toString());
             return result.toString();
         } catch (Exception e) {
+            e.printStackTrace();
             return "There was an error: " + e.toString() + "; " + e.getMessage();
         }
 

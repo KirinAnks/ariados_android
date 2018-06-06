@@ -20,7 +20,7 @@ public class TrainersActivity extends AppCompatActivity {
     HashMap<String, String> data = new HashMap<>();
     String params;
     String SESSION_KEY;
-    ApiRequest request;
+    private ApiRequest request;
     JSONObject response;
     Boolean success ;
     String message;
@@ -34,7 +34,6 @@ public class TrainersActivity extends AppCompatActivity {
         view_list = findViewById(R.id.view_list);
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
 
-        request = new ApiRequest();
         response = new JSONObject();
         success = false;
         message = "";
@@ -46,13 +45,17 @@ public class TrainersActivity extends AppCompatActivity {
                     data.put("name", query);
                     params = Utiles.getPostDataString(data);
                     // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
-                    request.execute("/trainers/filter/", "GET", params, SESSION_KEY).get();
+                    request = new ApiRequest();
+                    request.execute("/trainers/filter/?" + params, "GET", "", SESSION_KEY).get();
+
+                    //TODO: encontrar la manera de parsear la respuesta que recibimos si es un ARRAY a JSON y viceversa
                     response = request.getResponse();
                     System.out.println(response.toString());
                 } catch (Exception e) {
+                    request.cancel(true);
                     e.printStackTrace();
                 }
-                Toast.makeText(TrainersActivity.this, query, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TrainersActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                 return true;
             }
 

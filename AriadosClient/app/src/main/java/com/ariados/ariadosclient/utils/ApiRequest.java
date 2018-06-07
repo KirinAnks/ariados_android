@@ -2,6 +2,8 @@ package com.ariados.ariadosclient.utils;
 
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -20,6 +22,9 @@ public class ApiRequest extends AsyncTask<String, String, String> {
     //    private static final String SERVER_URL = "http://192.168.72.3:8000";
     private static final String SERVER_URL = "http://192.168.100.38:8000";
     private JSONObject response;
+    private JSONArray response_array;
+    private boolean success;
+    private boolean is_array;
 
     public ApiRequest() {
         this.response = new JSONObject();
@@ -27,6 +32,18 @@ public class ApiRequest extends AsyncTask<String, String, String> {
 
     public JSONObject getResponse() {
         return response;
+    }
+
+    public JSONArray getResponseArray() {
+        return response_array;
+    }
+
+    public boolean getSuccess() {
+        return success;
+    }
+
+    public boolean getIsArray() {
+        return is_array;
     }
 
     @Override
@@ -73,10 +90,19 @@ public class ApiRequest extends AsyncTask<String, String, String> {
             }
 
             // Seteamos los atributos para posteriormente recuperarlos (aunque rompemos la llamada asíncrona con el .get())
-            this.response = new JSONObject(result.toString());
+            try {
+                this.response = new JSONObject(result.toString());
+                this.is_array = false;
+            } catch (JSONException e) {
+                this.response_array = new JSONArray(result.toString());
+                this.is_array = true;
+            }
+            this.success = true;
             return result.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            this.success = false;
+            this.is_array = false;
             return "There was an error: " + e.toString() + "; " + e.getMessage();
         }
 

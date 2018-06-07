@@ -1,7 +1,12 @@
 package com.ariados.ariadosclient.utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,5 +27,19 @@ public class Utiles {
         }
 
         return result.toString();
+    }
+
+    public static ArrayList<JSONObject> castToJSONList(JSONArray response_array) {
+        ArrayList<JSONObject> listdata = new ArrayList<>();
+        if (response_array != null) {
+            for (int i = 0; i < response_array.length(); i++) {
+                try {
+                    listdata.add(response_array.getJSONObject(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return listdata;
     }
 }

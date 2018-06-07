@@ -33,8 +33,8 @@ public class Trainer {
             this.team = json_trainer.getString("team");
             this.home_location = json_trainer.getString("home_location");
             this.current_location = json_trainer.getString("current_location");
-            this.user__username = json_trainer.getString("user.username");
-            this.user__email = json_trainer.getString("user.email");
+//            this.user__username = json_trainer.getString("user.username");
+//            this.user__email = json_trainer.getString("user.email");
         } catch (Exception e) {
             this.name = "";
             this.team = "";
@@ -92,5 +92,10 @@ public class Trainer {
 
     public void setUser__email(String user__email) {
         this.user__email = user__email;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s %s", this.name, this.team, this.home_location);
     }
 }

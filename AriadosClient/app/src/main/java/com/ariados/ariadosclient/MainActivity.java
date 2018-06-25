@@ -5,14 +5,31 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ariados.ariadosclient.models.FriendRequest;
+import com.ariados.ariadosclient.models.Trainer;
+import com.ariados.ariadosclient.utils.ApiRequest;
+import com.ariados.ariadosclient.utils.Utiles;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     Button bt_search;
     TextView text_welcome;
-    TextView text_key;
+    TextView txt_requests;
     String SESSION_KEY;
+    ImageButton bt_requests;
+    ApiRequest request;
+    ArrayList<FriendRequest> friend_requests;
+    JSONArray response_array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bt_search = findViewById(R.id.bt_search);
+        bt_requests = findViewById(R.id.bt_requests);
         text_welcome = findViewById(R.id.text_welcome);
-        text_key = findViewById(R.id.text_key);
+        txt_requests = findViewById(R.id.txt_requests);
 
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
-        text_key.setText(SESSION_KEY);
 
         bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,5 +52,30 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent_trainers);
             }
         });
+
+        try {
+            friend_requests = new ArrayList<>();
+
+            // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
+            request = new ApiRequest();
+            request.execute("/trainers/get_friend_requests/" , "GET", "", SESSION_KEY).get();
+
+            if (request.getSuccess() && request.getIsArray()) {
+                response_array = request.getResponseArray();
+                ArrayList<JSONObject> json_list = Utiles.castToJSONList(response_array);
+//                for(JSONObject json: json_list){
+//                    friend_requests.add(new FriendRequest(json));
+//                }
+                if (json_list.size()>0){
+                    bt_requests.setVisibility(View.VISIBLE);
+                    txt_requests.setVisibility(View.VISIBLE);
+                    txt_requests.setText("You have " + json_list.size() + " pending friend requests");
+                }
+            }
+
+        } catch (Exception e) {
+            request.cancel(true);
+            e.printStackTrace();
+        }
     }
 }

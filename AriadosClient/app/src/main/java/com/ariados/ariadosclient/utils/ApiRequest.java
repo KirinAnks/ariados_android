@@ -46,6 +46,13 @@ public class ApiRequest extends AsyncTask<String, String, String> {
         return is_array;
     }
 
+    /**
+     * @param param[0]: url to request
+     * @param param[1]: method (GET / POST)
+     * @param param[2]: post parameters (if method = post)
+     * @param param[3]: key (if authentication needed)
+     *
+     */
     @Override
     protected String doInBackground(String... params) {
         StringBuilder result = new StringBuilder();

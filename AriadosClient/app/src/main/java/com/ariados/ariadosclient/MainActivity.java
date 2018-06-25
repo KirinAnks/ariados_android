@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Para que aparezca el texto y el botón de las friend request en el caso en que existan
         try {
             friend_requests = new ArrayList<>();
 
@@ -77,5 +78,16 @@ public class MainActivity extends AppCompatActivity {
             request.cancel(true);
             e.printStackTrace();
         }
+
+        // el listener de onclick del botón de las friend requests
+        bt_requests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_requests = new Intent(MainActivity.this, FriendRequestsActivity.class);
+                intent_requests.putExtra("SESSION_KEY", SESSION_KEY);
+                MainActivity.this.startActivity(intent_requests);
+            }
+        });
     }
 }

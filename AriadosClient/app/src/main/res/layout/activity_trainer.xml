@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_instinct"
+        android:layout_width="208dp"
+        android:layout_height="247dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="179dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="179dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/team_instinct" />
+
+    <ImageView
+        android:id="@+id/img_mystic"
+        android:layout_width="206dp"
+        android:layout_height="247dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="178dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="178dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/team_mystic" />
+
+    <ImageView
+        android:id="@+id/img_valor"
+        android:layout_width="206dp"
+        android:layout_height="246dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="178dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="178dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/team_valor" />
+
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="152dp"
+        android:text="NAME"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="HOME"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map_location"
+        android:layout_width="319dp"
+        android:layout_height="211dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginRight="52dp"
+        android:layout_marginStart="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

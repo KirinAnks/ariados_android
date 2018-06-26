@@ -23,6 +23,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     Button bt_search;
+    Button bt_friends;
     TextView text_welcome;
     TextView txt_requests;
     String SESSION_KEY;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bt_search = findViewById(R.id.bt_search);
+        bt_friends = findViewById(R.id.bt_friends);
         bt_requests = findViewById(R.id.bt_requests);
         text_welcome = findViewById(R.id.text_welcome);
         txt_requests = findViewById(R.id.txt_requests);
@@ -50,6 +52,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent_trainers = new Intent(MainActivity.this, TrainersActivity.class);
                 intent_trainers.putExtra("SESSION_KEY", SESSION_KEY);
                 MainActivity.this.startActivity(intent_trainers);
+            }
+        });
+
+        bt_friends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_friends = new Intent(MainActivity.this, FriendsActivity.class);
+                intent_friends.putExtra("SESSION_KEY", SESSION_KEY);
+                MainActivity.this.startActivity(intent_friends);
             }
         });
 

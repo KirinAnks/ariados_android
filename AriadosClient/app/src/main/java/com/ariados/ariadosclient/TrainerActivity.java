@@ -1,6 +1,5 @@
 package com.ariados.ariadosclient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,10 +10,16 @@ import android.widget.Toast;
 import com.ariados.ariadosclient.models.Trainer;
 import com.ariados.ariadosclient.utils.ApiRequest;
 import com.ariados.ariadosclient.utils.Utiles;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 
 public class TrainerActivity extends AppCompatActivity {
@@ -22,6 +27,7 @@ public class TrainerActivity extends AppCompatActivity {
     TextView txt_name;
     TextView txt_home;
     MapView map_location;
+    GoogleMap map;
     String SESSION_KEY;
     String TRAINER_NAME;
     ImageView img_instinct;
@@ -29,7 +35,7 @@ public class TrainerActivity extends AppCompatActivity {
     ImageView img_valor;
     ApiRequest request;
     JSONObject response;
-    Trainer trainer;
+    Trainer trainer = new Trainer();
     HashMap<String, String> data;
     String params;
 
@@ -79,7 +85,7 @@ public class TrainerActivity extends AppCompatActivity {
                         img_valor.setVisibility(View.VISIBLE);
                         break;
                 }
-            } else{
+            } else {
                 Toast.makeText(TrainerActivity.this, response.getString("error"), Toast.LENGTH_LONG).show();
 //                finish();
             }
@@ -91,5 +97,24 @@ public class TrainerActivity extends AppCompatActivity {
 //            finish();
 
         }
+
+        // Snippet de codigo para establecer la localización en el mapa
+        map_location.onCreate(savedInstanceState);
+        map_location.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                String[] latlong = trainer.getCurrent_location().split(",");
+                double lat,lng;
+                lat = lng = 0.0;
+                if(latlong.length == 2){
+                    lat = Double.parseDouble(trainer.getCurrent_location().split(",")[0]);
+                    lng = Double.parseDouble(trainer.getCurrent_location().split(",")[1]);
+                }
+                LatLng coordinates = new LatLng(lat, lng);
+                googleMap.addMarker(new MarkerOptions().position(coordinates).title(trainer.getName()));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15));
+                map_location.onResume();
+            }
+        });
     }
 }

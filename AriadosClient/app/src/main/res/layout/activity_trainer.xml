@@ -73,14 +73,26 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map_location"
-        android:layout_width="319dp"
-        android:layout_height="211dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="352dp"
+        android:layout_height="222dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginEnd="52dp"
         android:layout_marginLeft="52dp"
         android:layout_marginRight="52dp"
         android:layout_marginStart="52dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginRight="148dp"
+        android:text="Last location"
+        app:layout_constraintBottom_toTopOf="@+id/map_location"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

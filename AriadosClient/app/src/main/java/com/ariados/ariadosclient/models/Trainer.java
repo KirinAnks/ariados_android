@@ -10,6 +10,15 @@ public class Trainer {
     private String user__username;
     private String user__email;
 
+    public Trainer(){
+        this.name = "";
+        this.team = "";
+        this.home_location = "";
+        this.current_location = "";
+        this.user__username = "";
+        this.user__email = "";
+    }
+
     /**
      * @param name = username in Pokémon Go!
      * @param team = chosed team in Pokémon Go!

@@ -16,6 +16,9 @@
         android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyB8cM2sMheQUoQ-XoqPSrl9I_CiU07e_5I" />
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".TrainersActivity"></activity>

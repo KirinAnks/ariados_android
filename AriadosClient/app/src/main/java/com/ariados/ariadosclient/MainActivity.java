@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button bt_search;
     Button bt_friends;
+    Button bt_map;
     TextView text_welcome;
     TextView txt_requests;
     String SESSION_KEY;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bt_search = findViewById(R.id.bt_search);
+        bt_map = findViewById(R.id.bt_map);
         bt_friends = findViewById(R.id.bt_friends);
         bt_requests = findViewById(R.id.bt_requests);
         text_welcome = findViewById(R.id.text_welcome);
@@ -99,6 +101,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent_requests = new Intent(MainActivity.this, FriendRequestsActivity.class);
                 intent_requests.putExtra("SESSION_KEY", SESSION_KEY);
                 MainActivity.this.startActivity(intent_requests);
+            }
+        });
+
+        // el listener de onclick del botón del mapa
+        bt_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_map = new Intent(MainActivity.this, MapActivity.class);
+                intent_map.putExtra("SESSION_KEY", SESSION_KEY);
+                MainActivity.this.startActivity(intent_map);
             }
         });
     }

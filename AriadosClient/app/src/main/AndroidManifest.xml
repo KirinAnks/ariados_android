@@ -32,6 +32,7 @@
         <activity android:name=".FriendRequestsActivity"></activity>
         <activity android:name=".TrainerActivity"></activity>
         <activity android:name=".FriendsActivity"></activity>
+        <activity android:name=".MapActivity"></activity>
     </application>
 
 </manifest>

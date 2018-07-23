@@ -7,10 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ariados.ariadosclient.models.FriendRequest;
-import com.ariados.ariadosclient.models.Trainer;
 import com.ariados.ariadosclient.utils.ApiRequest;
 import com.ariados.ariadosclient.utils.Utiles;
 
@@ -18,13 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     Button bt_search;
     Button bt_friends;
     Button bt_map;
+    Button bt_posts;
     TextView text_welcome;
     TextView txt_requests;
     String SESSION_KEY;
@@ -39,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bt_search = findViewById(R.id.bt_search);
+        bt_posts = findViewById(R.id.bt_posts);
         bt_map = findViewById(R.id.bt_map);
         bt_friends = findViewById(R.id.bt_friends);
         bt_requests = findViewById(R.id.bt_requests);
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
             request = new ApiRequest();
-            request.execute("/trainers/get_friend_requests/" , "GET", "", SESSION_KEY).get();
+            request.execute("/trainers/get_friend_requests/", "GET", "", SESSION_KEY).get();
 
             if (request.getSuccess() && request.getIsArray()) {
                 response_array = request.getResponseArray();
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 //                for(JSONObject json: json_list){
 //                    friend_requests.add(new FriendRequest(json));
 //                }
-                if (json_list.size()>0){
+                if (json_list.size() > 0) {
                     bt_requests.setVisibility(View.VISIBLE);
                     txt_requests.setVisibility(View.VISIBLE);
                     txt_requests.setText("You have " + json_list.size() + " pending friend requests");
@@ -112,6 +111,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent_map = new Intent(MainActivity.this, MapActivity.class);
                 intent_map.putExtra("SESSION_KEY", SESSION_KEY);
                 MainActivity.this.startActivity(intent_map);
+            }
+        });
+
+        // el listener de onclick del botón del mapa
+        bt_posts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_posts = new Intent(MainActivity.this, PostsActivity.class);
+                intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
+                MainActivity.this.startActivity(intent_posts);
             }
         });
     }

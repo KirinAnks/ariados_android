@@ -33,6 +33,7 @@
         <activity android:name=".TrainerActivity"></activity>
         <activity android:name=".FriendsActivity"></activity>
         <activity android:name=".MapActivity"></activity>
+        <activity android:name=".PostsActivity"></activity>
     </application>
 
 </manifest>

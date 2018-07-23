@@ -123,8 +123,6 @@ public class MapActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
-
             }
         });
     }

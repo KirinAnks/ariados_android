@@ -1,7 +1,13 @@
 package com.ariados.ariadosclient;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -131,6 +137,22 @@ public class PostsActivity extends AppCompatActivity {
                     doJob(newText, false);
                 }
                 return true;
+            }
+
+        });
+
+
+        view_list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String post = arrayAdapter.getItem(position);
+                String post_title =  post.split("\\s\\|\\|")[0];
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_post = new Intent(PostsActivity.this, PostActivity.class);
+                intent_post.putExtra("SESSION_KEY", SESSION_KEY);
+                intent_post.putExtra("POST_TITLE", post_title);
+                PostsActivity.this.startActivity(intent_post);
+
             }
 
         });

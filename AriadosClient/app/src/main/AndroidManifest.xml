@@ -34,6 +34,7 @@
         <activity android:name=".FriendsActivity"></activity>
         <activity android:name=".MapActivity"></activity>
         <activity android:name=".PostsActivity"></activity>
+        <activity android:name=".PostActivity"></activity>
     </application>
 
 </manifest>

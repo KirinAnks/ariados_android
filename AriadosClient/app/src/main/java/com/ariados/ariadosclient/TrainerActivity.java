@@ -19,7 +19,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 
 public class TrainerActivity extends AppCompatActivity {
@@ -45,7 +44,7 @@ public class TrainerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer);
 
-        txt_name = findViewById(R.id.txt_name);
+        txt_name = findViewById(R.id.txt_title);
         txt_home = findViewById(R.id.txt_home);
         map_location = findViewById(R.id.map_location);
         img_instinct = findViewById(R.id.img_instinct);

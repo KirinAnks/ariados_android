@@ -106,4 +106,19 @@
         app:layout_constraintStart_toEndOf="@+id/img_dislike"
         app:layout_constraintTop_toBottomOf="@+id/txt_text" />
 
+    <ListView
+        android:id="@+id/list_answers"
+        android:layout_width="368dp"
+        android:layout_height="232dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_answers" />
+
 </android.support.constraint.ConstraintLayout>

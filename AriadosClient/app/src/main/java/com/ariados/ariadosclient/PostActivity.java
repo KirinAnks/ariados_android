@@ -2,25 +2,23 @@ package com.ariados.ariadosclient;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ariados.ariadosclient.models.Answer;
 import com.ariados.ariadosclient.models.Post;
-import com.ariados.ariadosclient.models.Trainer;
 import com.ariados.ariadosclient.utils.ApiRequest;
 import com.ariados.ariadosclient.utils.Utiles;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -34,10 +32,17 @@ public class PostActivity extends AppCompatActivity {
     ImageView img_like;
     ImageView img_dislike;
     ApiRequest request;
+    ApiRequest request_answers;
     JSONObject response;
     Post post = new Post();
     HashMap<String, String> data;
     String params;
+    JSONArray response_array;
+    Boolean success;
+    String message;
+    List<Answer> answers;
+    ArrayAdapter<String> arrayAdapter;
+    ListView list_answers;
 
 
     @Override
@@ -73,7 +78,7 @@ public class PostActivity extends AppCompatActivity {
                 txt_title.setText(post.getTitle());
                 txt_text.setText(post.getText());
                 txt_metadata.setText(String.format("posted by %s at %s", post.getCreator(), post.getLast_update()));
-                
+
             } else {
                 Toast.makeText(PostActivity.this, response.getString("error"), Toast.LENGTH_LONG).show();
 //                finish();
@@ -85,6 +90,44 @@ public class PostActivity extends AppCompatActivity {
             e.printStackTrace();
 //            finish();
 
+        }
+
+        list_answers = findViewById(R.id.list_answers);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        list_answers.setAdapter(arrayAdapter);
+
+        response_array = new JSONArray();
+        success = false;
+        message = "";
+
+        try {
+            answers = new ArrayList<>();
+            arrayAdapter.clear();
+            arrayAdapter.notifyDataSetChanged();
+
+            // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
+            request_answers = new ApiRequest();
+            request_answers.execute("/posts/answers/?"+ params, "GET", "", SESSION_KEY).get();
+
+            if (request_answers.getSuccess() && request_answers.getIsArray()) {
+                response_array = request_answers.getResponseArray();
+                ArrayList<JSONObject> json_list = Utiles.castToJSONList(response_array);
+                for (JSONObject json : json_list) {
+                    answers.add(new Answer(json));
+                }
+
+                List<String> strings = new ArrayList<>(answers.size());
+                for (Answer t : answers) {
+                    strings.add(t.toString());
+                }
+
+                arrayAdapter.addAll(strings);
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+        } catch (Exception e) {
+            request_answers.cancel(true);
+            e.printStackTrace();
         }
     }
 }

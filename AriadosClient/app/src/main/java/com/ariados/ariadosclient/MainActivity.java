@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ariados.ariadosclient.models.Event;
 import com.ariados.ariadosclient.models.FriendRequest;
 import com.ariados.ariadosclient.utils.ApiRequest;
 import com.ariados.ariadosclient.utils.Utiles;
@@ -16,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,8 +32,13 @@ public class MainActivity extends AppCompatActivity {
     String SESSION_KEY;
     ImageButton bt_requests;
     ApiRequest request;
+    ApiRequest request_events;
     ArrayList<FriendRequest> friend_requests;
+    ArrayList<Event> events;
     JSONArray response_array;
+    JSONArray events_response_array;
+    ListView list_events;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
 
+        // Button listeners
         bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,33 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent_friends);
             }
         });
-
-        // Para que aparezca el texto y el botón de las friend request en el caso en que existan
-        try {
-            friend_requests = new ArrayList<>();
-
-            // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
-            request = new ApiRequest();
-            request.execute("/trainers/get_friend_requests/", "GET", "", SESSION_KEY).get();
-
-            if (request.getSuccess() && request.getIsArray()) {
-                response_array = request.getResponseArray();
-                ArrayList<JSONObject> json_list = Utiles.castToJSONList(response_array);
-//                for(JSONObject json: json_list){
-//                    friend_requests.add(new FriendRequest(json));
-//                }
-                if (json_list.size() > 0) {
-                    bt_requests.setVisibility(View.VISIBLE);
-                    txt_requests.setVisibility(View.VISIBLE);
-                    txt_requests.setText("You have " + json_list.size() + " pending friend requests");
-                }
-            }
-
-        } catch (Exception e) {
-            request.cancel(true);
-            e.printStackTrace();
-        }
-
         // el listener de onclick del botón de las friend requests
         bt_requests.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,5 +107,70 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent_posts);
             }
         });
+
+
+        // Para que aparezca el texto y el botón de las friend request en el caso en que existan
+        try {
+            friend_requests = new ArrayList<>();
+
+            // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
+            request = new ApiRequest();
+            request.execute("/trainers/get_friend_requests/", "GET", "", SESSION_KEY).get();
+
+            if (request.getSuccess() && request.getIsArray()) {
+                response_array = request.getResponseArray();
+                ArrayList<JSONObject> json_list = Utiles.castToJSONList(response_array);
+//                for(JSONObject json: json_list){
+//                    friend_requests.add(new FriendRequest(json));
+//                }
+                if (json_list.size() > 0) {
+                    bt_requests.setVisibility(View.VISIBLE);
+                    txt_requests.setVisibility(View.VISIBLE);
+                    txt_requests.setText("You have " + json_list.size() + " pending friend requests");
+                }
+            }
+
+        } catch (Exception e) {
+            request.cancel(true);
+            e.printStackTrace();
+        }
+
+
+        // EVENTS LIST GETTER
+        list_events = findViewById(R.id.list_events);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        list_events.setAdapter(arrayAdapter);
+
+        events_response_array = new JSONArray();
+
+        try {
+            events = new ArrayList<>();
+            arrayAdapter.clear();
+            arrayAdapter.notifyDataSetChanged();
+
+            // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
+            request_events = new ApiRequest();
+            request_events.execute("/events/", "GET", "", SESSION_KEY).get();
+
+            if (request_events.getSuccess() && request_events.getIsArray()) {
+                events_response_array = request_events.getResponseArray();
+                ArrayList<JSONObject> json_list = Utiles.castToJSONList(events_response_array);
+                for (JSONObject json : json_list) {
+                    events.add(new Event(json));
+                }
+
+                List<String> strings = new ArrayList<>(events.size());
+                for (Event e : events) {
+                    strings.add(e.toString());
+                }
+
+                arrayAdapter.addAll(strings);
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+        } catch (Exception e) {
+            request_events.cancel(true);
+            e.printStackTrace();
+        }
     }
 }

@@ -121,4 +121,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_answers" />
 
+    <Button
+        android:id="@+id/bt_edit"
+        android:layout_width="37dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:drawable/ic_menu_edit"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/txt_text"
+        app:layout_constraintEnd_toStartOf="@+id/bt_delete" />
+
+    <Button
+        android:id="@+id/bt_delete"
+        android:layout_width="36dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@android:drawable/ic_menu_delete"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/txt_text"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

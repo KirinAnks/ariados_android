@@ -1,10 +1,10 @@
 package com.ariados.ariadosclient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.ariados.ariadosclient.models.Answer;
 import com.ariados.ariadosclient.models.Post;
+import com.ariados.ariadosclient.models.Trainer;
 import com.ariados.ariadosclient.utils.ApiRequest;
 import com.ariados.ariadosclient.utils.Utiles;
 
@@ -21,7 +22,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -34,10 +34,14 @@ public class PostActivity extends AppCompatActivity {
     String POST_TITLE;
     ImageView img_like;
     ImageView img_dislike;
+    Button bt_edit;
+    Button bt_delete;
     ApiRequest request;
+    ApiRequest request_author;
     ApiRequest request_votes;
     ApiRequest request_answers;
     JSONObject response;
+    JSONObject response_author;
     JSONObject response_votes;
     Post post = new Post();
     HashMap<String, String> data;
@@ -63,9 +67,13 @@ public class PostActivity extends AppCompatActivity {
         txt_title = findViewById(R.id.txt_title);
         img_like = findViewById(R.id.img_like);
         img_dislike = findViewById(R.id.img_dislike);
+        bt_edit = findViewById(R.id.bt_edit);
+        bt_delete = findViewById(R.id.bt_delete);
 
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
         POST_TITLE = getIntent().getStringExtra("POST_TITLE");
+
+        display_edit_delete_buttons();
 
         // Para que aparezcan los datos a mostrar hay que consultar a la api
         try {
@@ -114,7 +122,7 @@ public class PostActivity extends AppCompatActivity {
 
             // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
             request_answers = new ApiRequest();
-            request_answers.execute("/posts/answers/?"+ params, "GET", "", SESSION_KEY).get();
+            request_answers.execute("/posts/answers/?" + params, "GET", "", SESSION_KEY).get();
 
             if (request_answers.getSuccess() && request_answers.getIsArray()) {
                 response_array = request_answers.getResponseArray();
@@ -151,12 +159,12 @@ public class PostActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(PostActivity.this, "Already voted!" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, "Already voted!", Toast.LENGTH_SHORT).show();
                     request_votes.cancel(true);
                 }
 
                 get_votes();
-                Toast.makeText(PostActivity.this, "Upvoted!" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(PostActivity.this, "Upvoted!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -174,18 +182,18 @@ public class PostActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(PostActivity.this, "Already voted!" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, "Already voted!", Toast.LENGTH_SHORT).show();
                     request_votes.cancel(true);
                 }
 
                 get_votes();
-                Toast.makeText(PostActivity.this, "Downvoted!" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(PostActivity.this, "Downvoted!", Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
-    public void get_votes(){
+    public void get_votes() {
         try {
             // Hacemos la llamada asíncrona con execute, pero mediante .get() rompemos la asincronía para poder obtener los valores seteados.
             request_votes = new ApiRequest();
@@ -214,5 +222,33 @@ public class PostActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void display_edit_delete_buttons() {
+        try {
+            request_author = new ApiRequest();
+            data = new HashMap<>();
+            data.put("title", POST_TITLE);
+            params = Utiles.getPostDataString(data);
+            request_author.execute("/posts/is_author/?" + params, "GET", "", SESSION_KEY).get();
+            response_author = request_author.getResponse();
+
+            System.out.println(request_author);
+            System.out.println(response_author);
+            if (request_author.getSuccess()) {
+                int is_author = response_author.getInt("is_author");
+
+                if (is_author == 1) {
+                    bt_edit.setVisibility(View.VISIBLE);
+                    bt_delete.setVisibility(View.VISIBLE);
+                }
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(PostActivity.this, "An error occured: " + e.toString(), Toast.LENGTH_LONG).show();
+            request_author.cancel(true);
+            e.printStackTrace();
+//            finish();
+        }
     }
 }

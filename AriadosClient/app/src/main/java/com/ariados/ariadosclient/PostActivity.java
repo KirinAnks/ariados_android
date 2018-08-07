@@ -1,5 +1,6 @@
 package com.ariados.ariadosclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.ariados.ariadosclient.utils.Utiles;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +76,43 @@ public class PostActivity extends AppCompatActivity {
         POST_TITLE = getIntent().getStringExtra("POST_TITLE");
 
         display_edit_delete_buttons();
+
+        // Button listeners
+        bt_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                request = new ApiRequest();
+                data = new HashMap<>();
+                data.put("title", POST_TITLE);
+                try {
+                    params = Utiles.getPostDataString(data);
+                    request.execute("/posts/delete/?" + params, "GET", "", SESSION_KEY).get();
+                    response = request.getResponse();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(PostActivity.this, "Couldn't delete post", Toast.LENGTH_LONG).show();
+                }
+
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_posts = new Intent(PostActivity.this, PostsActivity.class);
+                intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
+                PostActivity.this.startActivity(intent_posts);
+                Toast.makeText(PostActivity.this, "Succesfully deleted", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        bt_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_edit = new Intent(PostActivity.this, PostEditActivity.class);
+                intent_edit.putExtra("SESSION_KEY", SESSION_KEY);
+                intent_edit.putExtra("POST_TITLE", POST_TITLE);
+                PostActivity.this.startActivity(intent_edit);
+                Toast.makeText(PostActivity.this, "Succesfully deleted", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         // Para que aparezcan los datos a mostrar hay que consultar a la api
         try {

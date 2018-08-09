@@ -108,8 +108,8 @@ public class PostActivity extends AppCompatActivity {
                 Intent intent_edit = new Intent(PostActivity.this, PostEditActivity.class);
                 intent_edit.putExtra("SESSION_KEY", SESSION_KEY);
                 intent_edit.putExtra("POST_TITLE", POST_TITLE);
+                intent_edit.putExtra("POST_TEXT", txt_text.getText().toString());
                 PostActivity.this.startActivity(intent_edit);
-                Toast.makeText(PostActivity.this, "Succesfully deleted", Toast.LENGTH_LONG).show();
             }
         });
 

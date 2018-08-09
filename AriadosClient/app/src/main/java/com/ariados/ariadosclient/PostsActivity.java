@@ -1,14 +1,12 @@
 package com.ariados.ariadosclient;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -38,6 +36,7 @@ public class PostsActivity extends AppCompatActivity {
     String message;
     List<Post> posts;
     ArrayAdapter<String> arrayAdapter;
+    Button bt_main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +44,7 @@ public class PostsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_posts);
 
         input_search = findViewById(R.id.input_search);
+        bt_main = findViewById(R.id.bt_main);
         view_list = findViewById(R.id.view_list);
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
@@ -142,11 +142,11 @@ public class PostsActivity extends AppCompatActivity {
         });
 
 
-        view_list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        view_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String post = arrayAdapter.getItem(position);
-                String post_title =  post.split("\\s\\|\\|")[0];
+                String post_title = post.split("\\s\\|\\|")[0];
                 // Cambiar de "layout/activity" al pulsar este botón
                 Intent intent_post = new Intent(PostsActivity.this, PostActivity.class);
                 intent_post.putExtra("SESSION_KEY", SESSION_KEY);
@@ -156,6 +156,17 @@ public class PostsActivity extends AppCompatActivity {
             }
 
         });
+
+        bt_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_main = new Intent(PostsActivity.this, MainActivity.class);
+                intent_main.putExtra("SESSION_KEY", SESSION_KEY);
+                PostsActivity.this.startActivity(intent_main);
+            }
+        });
+
 
     }
 }

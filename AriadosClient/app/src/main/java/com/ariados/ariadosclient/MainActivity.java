@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Button bt_friends;
     Button bt_map;
     Button bt_posts;
+    Button bt_logout;
     TextView text_welcome;
     TextView txt_requests;
     String SESSION_KEY;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         bt_posts = findViewById(R.id.bt_posts);
         bt_map = findViewById(R.id.bt_map);
         bt_friends = findViewById(R.id.bt_friends);
+        bt_logout = findViewById(R.id.bt_logout);
         bt_requests = findViewById(R.id.bt_requests);
         text_welcome = findViewById(R.id.text_welcome);
         txt_requests = findViewById(R.id.txt_requests);
@@ -104,6 +106,16 @@ public class MainActivity extends AppCompatActivity {
                 // Cambiar de "layout/activity" al pulsar este botón
                 Intent intent_posts = new Intent(MainActivity.this, PostsActivity.class);
                 intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
+                MainActivity.this.startActivity(intent_posts);
+            }
+        });
+
+        // el listener de onclick del botón de logout
+        bt_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_posts = new Intent(MainActivity.this, LoginActivity.class);
                 MainActivity.this.startActivity(intent_posts);
             }
         });

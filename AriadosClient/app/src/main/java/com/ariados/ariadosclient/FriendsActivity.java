@@ -1,15 +1,13 @@
 package com.ariados.ariadosclient;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -28,6 +26,7 @@ import java.util.List;
 public class FriendsActivity extends AppCompatActivity {
 
     ListView view_list;
+    Button bt_main;
     SearchView input_search;
     HashMap<String, String> data = new HashMap<>();
     HashMap<String, String> data_friend = new HashMap<>();
@@ -46,9 +45,10 @@ public class FriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friends);
 
         input_search = findViewById(R.id.input_search);
+        bt_main = findViewById(R.id.bt_main);
         view_list = findViewById(R.id.view_list);
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1 );
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         view_list.setAdapter(arrayAdapter);
 
         response_array = new JSONArray();
@@ -67,7 +67,7 @@ public class FriendsActivity extends AppCompatActivity {
             if (request.getSuccess() && request.getIsArray()) {
                 response_array = request.getResponseArray();
                 ArrayList<JSONObject> json_list = Utiles.castToJSONList(response_array);
-                for(JSONObject json: json_list){
+                for (JSONObject json : json_list) {
                     trainers.add(new Trainer(json));
                 }
 
@@ -86,7 +86,7 @@ public class FriendsActivity extends AppCompatActivity {
         }
 
         input_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            private void doJob(String text, boolean submited){
+            private void doJob(String text, boolean submited) {
                 try {
                     trainers = new ArrayList<>();
                     arrayAdapter.clear();
@@ -101,7 +101,7 @@ public class FriendsActivity extends AppCompatActivity {
                     if (request.getSuccess() && request.getIsArray()) {
                         response_array = request.getResponseArray();
                         ArrayList<JSONObject> json_list = Utiles.castToJSONList(response_array);
-                        for(JSONObject json: json_list){
+                        for (JSONObject json : json_list) {
                             trainers.add(new Trainer(json));
                         }
 
@@ -124,9 +124,9 @@ public class FriendsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(query.isEmpty()){
+                if (query.isEmpty()) {
                     Toast.makeText(FriendsActivity.this, "Empty query!", Toast.LENGTH_SHORT).show();
-                } else{
+                } else {
                     doJob(query, true);
                 }
                 return true;
@@ -134,7 +134,7 @@ public class FriendsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(!newText.isEmpty()){
+                if (!newText.isEmpty()) {
                     doJob(newText, false);
                 }
                 return true;
@@ -142,11 +142,11 @@ public class FriendsActivity extends AppCompatActivity {
 
         });
 
-        view_list.setOnItemClickListener(new OnItemClickListener(){
+        view_list.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String trainer = arrayAdapter.getItem(position);
-                String trainer_name =  trainer.split("\\s+")[0];
+                String trainer_name = trainer.split("\\s+")[0];
                 // Cambiar de "layout/activity" al pulsar este botón
                 Intent intent_trainer = new Intent(FriendsActivity.this, TrainerActivity.class);
                 intent_trainer.putExtra("SESSION_KEY", SESSION_KEY);
@@ -156,5 +156,16 @@ public class FriendsActivity extends AppCompatActivity {
             }
 
         });
+
+        bt_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_main = new Intent(FriendsActivity.this, MainActivity.class);
+                intent_main.putExtra("SESSION_KEY", SESSION_KEY);
+                FriendsActivity.this.startActivity(intent_main);
+            }
+        });
+
     }
 }

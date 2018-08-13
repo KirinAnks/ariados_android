@@ -1,5 +1,7 @@
 package com.ariados.ariadosclient;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +15,12 @@ import android.widget.Toast;
 
 import com.ariados.ariadosclient.models.Answer;
 import com.ariados.ariadosclient.models.Post;
-import com.ariados.ariadosclient.models.Trainer;
 import com.ariados.ariadosclient.utils.ApiRequest;
 import com.ariados.ariadosclient.utils.Utiles;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,23 +81,40 @@ public class PostActivity extends AppCompatActivity {
         bt_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request = new ApiRequest();
-                data = new HashMap<>();
-                data.put("title", POST_TITLE);
-                try {
-                    params = Utiles.getPostDataString(data);
-                    request.execute("/posts/delete/?" + params, "GET", "", SESSION_KEY).get();
-                    response = request.getResponse();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(PostActivity.this, "Couldn't delete post", Toast.LENGTH_LONG).show();
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+                builder.setTitle("Delete post")
+                        .setMessage("Are you sure ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                request = new ApiRequest();
+                                data = new HashMap<>();
+                                data.put("title", POST_TITLE);
+                                try {
+                                    params = Utiles.getPostDataString(data);
+                                    request.execute("/posts/delete/?" + params, "GET", "", SESSION_KEY).get();
+                                    response = request.getResponse();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(PostActivity.this, "Couldn't delete post", Toast.LENGTH_LONG).show();
+                                }
 
-                // Cambiar de "layout/activity" al pulsar este botón
-                Intent intent_posts = new Intent(PostActivity.this, PostsActivity.class);
-                intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
-                PostActivity.this.startActivity(intent_posts);
-                Toast.makeText(PostActivity.this, "Succesfully deleted", Toast.LENGTH_LONG).show();
+                                // Cambiar de "layout/activity" al pulsar este botón
+                                Intent intent_posts = new Intent(PostActivity.this, PostsActivity.class);
+                                intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
+                                PostActivity.this.startActivity(intent_posts);
+                                Toast.makeText(PostActivity.this, "Succesfully deleted", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(PostActivity.this, "Delete canceled", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 

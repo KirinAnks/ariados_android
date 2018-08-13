@@ -61,16 +61,17 @@ public class PostEditActivity extends AppCompatActivity {
                     if (!request.getSuccess()){
                         throw new RuntimeException("Error saving post");
                     }
+
+                    // Cambiar de "layout/activity" al pulsar este botón
+                    Intent intent_posts = new Intent(PostEditActivity.this, PostsActivity.class);
+                    intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
+                    PostEditActivity.this.startActivity(intent_posts);
+                    Toast.makeText(PostEditActivity.this, "Succesfully saved!", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(PostEditActivity.this, "Couldn't save post:" + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
-                // Cambiar de "layout/activity" al pulsar este botón
-                Intent intent_posts = new Intent(PostEditActivity.this, PostsActivity.class);
-                intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
-                PostEditActivity.this.startActivity(intent_posts);
-                Toast.makeText(PostEditActivity.this, "Succesfully saved!", Toast.LENGTH_LONG).show();
             }
         });
 

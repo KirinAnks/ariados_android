@@ -37,6 +37,7 @@ public class PostsActivity extends AppCompatActivity {
     List<Post> posts;
     ArrayAdapter<String> arrayAdapter;
     Button bt_main;
+    Button bt_new;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class PostsActivity extends AppCompatActivity {
 
         input_search = findViewById(R.id.input_search);
         bt_main = findViewById(R.id.bt_main);
+        bt_new = findViewById(R.id.bt_new);
         view_list = findViewById(R.id.view_list);
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
@@ -164,6 +166,16 @@ public class PostsActivity extends AppCompatActivity {
                 Intent intent_main = new Intent(PostsActivity.this, MainActivity.class);
                 intent_main.putExtra("SESSION_KEY", SESSION_KEY);
                 PostsActivity.this.startActivity(intent_main);
+            }
+        });
+
+        bt_new.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_create = new Intent(PostsActivity.this, PostCreateActivity.class);
+                intent_create.putExtra("SESSION_KEY", SESSION_KEY);
+                PostsActivity.this.startActivity(intent_create);
             }
         });
 

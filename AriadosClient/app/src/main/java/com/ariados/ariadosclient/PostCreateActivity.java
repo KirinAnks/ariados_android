@@ -53,28 +53,31 @@ public class PostCreateActivity extends AppCompatActivity {
         bt_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request = new ApiRequest();
-                data = new HashMap<>();
-                data.put("title", input_title.getText().toString());
-                data.put("text", input_text.getText().toString());
-                data.put("viewers", select_viewers.getSelectedItem().toString());
-                try {
-                    params = Utiles.getPostDataString(data);
-                    request.execute("/posts/create/", "POST", params, SESSION_KEY).get();
-                    if (!request.getSuccess()) {
-                        throw new RuntimeException("Error creating post");
+                if(input_title.getText().toString().isEmpty() || input_text.getText().toString().isEmpty()){
+                    Toast.makeText(PostCreateActivity.this, "Title or text cannot be empty!", Toast.LENGTH_LONG).show();
+                } else {
+                    request = new ApiRequest();
+                    data = new HashMap<>();
+                    data.put("title", input_title.getText().toString());
+                    data.put("text", input_text.getText().toString());
+                    data.put("viewers", select_viewers.getSelectedItem().toString());
+                    try {
+                        params = Utiles.getPostDataString(data);
+                        request.execute("/posts/create/", "POST", params, SESSION_KEY).get();
+                        if (!request.getSuccess()) {
+                            throw new RuntimeException("Error creating post");
+                        }
+
+                        // Cambiar de "layout/activity" al pulsar este botón
+                        Intent intent_posts = new Intent(PostCreateActivity.this, PostsActivity.class);
+                        intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
+                        PostCreateActivity.this.startActivity(intent_posts);
+                        Toast.makeText(PostCreateActivity.this, "Succesfully created!", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(PostCreateActivity.this, "Couldn't create post:" + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
-
-                    // Cambiar de "layout/activity" al pulsar este botón
-                    Intent intent_posts = new Intent(PostCreateActivity.this, PostsActivity.class);
-                    intent_posts.putExtra("SESSION_KEY", SESSION_KEY);
-                    PostCreateActivity.this.startActivity(intent_posts);
-                    Toast.makeText(PostCreateActivity.this, "Succesfully created!", Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(PostCreateActivity.this, "Couldn't create post:" + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 

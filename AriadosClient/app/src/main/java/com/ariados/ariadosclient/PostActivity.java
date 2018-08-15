@@ -38,6 +38,7 @@ public class PostActivity extends AppCompatActivity {
     ImageView img_dislike;
     Button bt_edit;
     Button bt_delete;
+    Button bt_answer;
     ApiRequest request;
     ApiRequest request_author;
     ApiRequest request_votes;
@@ -71,6 +72,7 @@ public class PostActivity extends AppCompatActivity {
         img_dislike = findViewById(R.id.img_dislike);
         bt_edit = findViewById(R.id.bt_edit);
         bt_delete = findViewById(R.id.bt_delete);
+        bt_answer = findViewById(R.id.bt_answer);
 
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
         POST_TITLE = getIntent().getStringExtra("POST_TITLE");
@@ -127,6 +129,17 @@ public class PostActivity extends AppCompatActivity {
                 intent_edit.putExtra("POST_TITLE", POST_TITLE);
                 intent_edit.putExtra("POST_TEXT", txt_text.getText().toString());
                 PostActivity.this.startActivity(intent_edit);
+            }
+        });
+
+        bt_answer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_answer = new Intent(PostActivity.this, PostAnswerActivity.class);
+                intent_answer.putExtra("SESSION_KEY", SESSION_KEY);
+                intent_answer.putExtra("POST_TITLE", POST_TITLE);
+                PostActivity.this.startActivity(intent_answer);
             }
         });
 

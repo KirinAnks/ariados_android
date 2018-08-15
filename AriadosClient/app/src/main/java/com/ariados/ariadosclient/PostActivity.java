@@ -39,6 +39,7 @@ public class PostActivity extends AppCompatActivity {
     Button bt_edit;
     Button bt_delete;
     Button bt_answer;
+    Button bt_main;
     ApiRequest request;
     ApiRequest request_author;
     ApiRequest request_votes;
@@ -72,6 +73,7 @@ public class PostActivity extends AppCompatActivity {
         img_dislike = findViewById(R.id.img_dislike);
         bt_edit = findViewById(R.id.bt_edit);
         bt_delete = findViewById(R.id.bt_delete);
+        bt_main = findViewById(R.id.bt_main);
         bt_answer = findViewById(R.id.bt_answer);
 
         SESSION_KEY = getIntent().getStringExtra("SESSION_KEY");
@@ -142,6 +144,17 @@ public class PostActivity extends AppCompatActivity {
                 PostActivity.this.startActivity(intent_answer);
             }
         });
+
+        bt_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cambiar de "layout/activity" al pulsar este botón
+                Intent intent_main = new Intent(PostActivity.this, MainActivity.class);
+                intent_main.putExtra("SESSION_KEY", SESSION_KEY);
+                PostActivity.this.startActivity(intent_main);
+            }
+        });
+
 
 
         // Para que aparezcan los datos a mostrar hay que consultar a la api

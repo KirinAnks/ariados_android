@@ -12,95 +12,76 @@
         android:layout_height="39dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Welcome"
         android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/bt_map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.574"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_requests" />
 
     <Button
         android:id="@+id/bt_map"
-        android:layout_width="182dp"
+        android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="4dp"
-        android:text="MAP"
+        android:background="@drawable/map_icon"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_search"
         app:layout_constraintTop_toBottomOf="@+id/text_welcome" />
 
     <Button
         android:id="@+id/bt_search"
-        android:layout_width="182dp"
+        android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="4dp"
-        android:text="Search Trainers"
+        android:background="@drawable/trainers_icon"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/bt_map"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_welcome" />
 
     <Button
         android:id="@+id/bt_friends"
-        android:layout_width="182dp"
+        android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Friends"
+        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/friends_icon"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/bt_posts"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_search" />
 
     <Button
         android:id="@+id/bt_posts"
-        android:layout_width="182dp"
+        android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Posts"
+        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/posts_icon"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_friends"
         app:layout_constraintTop_toBottomOf="@+id/bt_map" />
-
-    <ImageButton
-        android:id="@+id/bt_requests"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="3dp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_notification_overlay" />
 
     <TextView
         android:id="@+id/txt_requests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:gravity="left"
         android:text="You have x friend requests"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/bt_requests"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="165dp" />
 
     <ListView
         android:id="@+id/list_events"
@@ -145,5 +126,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.027" />
+
+    <Button
+        android:id="@+id/bt_requests"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/notifications"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_requests"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

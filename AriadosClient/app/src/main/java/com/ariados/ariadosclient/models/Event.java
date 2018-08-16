@@ -40,7 +40,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("%s || [%s] :\n%s", this.days, this.title, this.description);
+        return String.format("%s || %s :\n\n%s\n", this.days.toUpperCase(), this.title.toUpperCase(), this.description);
     }
 
     public String getId() {

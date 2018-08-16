@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView text_welcome;
     TextView txt_requests;
     String SESSION_KEY;
-    ImageButton bt_requests;
+    Button bt_requests;
     ApiRequest request;
     ApiRequest request_events;
     ArrayList<FriendRequest> friend_requests;

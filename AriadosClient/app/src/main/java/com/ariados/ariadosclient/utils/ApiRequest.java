@@ -20,7 +20,8 @@ import java.net.URL;
 
 public class ApiRequest extends AsyncTask<String, String, String> {
     //    private static final String SERVER_URL = "http://192.168.72.3:8000";
-    private static final String SERVER_URL = "http://192.168.100.38:8000";
+//    private static final String SERVER_URL = "http://192.168.100.38:8000";
+    private static final String SERVER_URL = "http://18.184.235.13";
     private JSONObject response;
     private JSONArray response_array;
     private boolean success;

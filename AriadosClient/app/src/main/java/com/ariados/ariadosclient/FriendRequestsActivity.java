@@ -2,6 +2,7 @@ package com.ariados.ariadosclient;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -95,7 +96,7 @@ public class FriendRequestsActivity extends AppCompatActivity {
                     builder = new AlertDialog.Builder(FriendRequestsActivity.this );
                 }
                 builder.setTitle("Friend request")
-                        .setMessage(trainer_name + "wants to be your friend. Do you want to add " + trainer_name + " as a new friend?")
+                        .setMessage(trainer_name + " wants to be your friend. Do you want to add " + trainer_name + " as a new friend?")
                         .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
@@ -108,6 +109,10 @@ public class FriendRequestsActivity extends AppCompatActivity {
                                         JSONObject result = request.getResponse();
                                         if(result.has("success")){
                                             Toast.makeText(FriendRequestsActivity.this, result.getString("success"), Toast.LENGTH_LONG).show();
+                                            // Cambiar de "layout/activity" al pulsar este botón
+                                            Intent intent_main = new Intent(FriendRequestsActivity.this, MainActivity.class);
+                                            intent_main.putExtra("SESSION_KEY", SESSION_KEY);
+                                            FriendRequestsActivity.this.startActivity(intent_main);
                                         }else if(result.has("error")){
                                             Toast.makeText(FriendRequestsActivity.this, result.getString("error"), Toast.LENGTH_LONG).show();
                                         }
@@ -130,6 +135,10 @@ public class FriendRequestsActivity extends AppCompatActivity {
                                         JSONObject result = request.getResponse();
                                         if(result.has("success")){
                                             Toast.makeText(FriendRequestsActivity.this, result.getString("success"), Toast.LENGTH_LONG).show();
+                                            // Cambiar de "layout/activity" al pulsar este botón
+                                            Intent intent_main = new Intent(FriendRequestsActivity.this, MainActivity.class);
+                                            intent_main.putExtra("SESSION_KEY", SESSION_KEY);
+                                            FriendRequestsActivity.this.startActivity(intent_main);
                                         }else if(result.has("error")){
                                             Toast.makeText(FriendRequestsActivity.this, result.getString("error"), Toast.LENGTH_LONG).show();
                                         }

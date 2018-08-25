@@ -129,7 +129,7 @@ public class TrainersActivity extends AppCompatActivity {
                     builder = new AlertDialog.Builder(TrainersActivity.this);
                 }
                 builder.setTitle("Friend request")
-                        .setMessage(trainer_name + "is not your friend. Do you want to add " + trainer_name + " as a new friend?")
+                        .setMessage(trainer_name + " is not your friend. Do you want to add " + trainer_name + " as a new friend?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
